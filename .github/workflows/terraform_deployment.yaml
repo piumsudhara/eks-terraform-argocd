@@ -89,17 +89,17 @@ jobs:
        if: steps.plan.outcome == 'failure'
        run: exit 1
  
-    #  - name: Terraform Apply
-    #    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    #    run: terraform apply -auto-approve -input=false
+     - name: Terraform Apply
+       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+       run: terraform apply -auto-approve -input=false
      
-    #  - name: Capture Terraform Output
-    #    id: tf_output
-    #    run: |
-    #       terraform output -raw eks_connect > eks_connect.txt
+     - name: Capture Terraform Output
+       id: tf_output
+       run: |
+          terraform output -raw eks_connect > eks_connect.txt
 
-    #  - name: Upload Terraform Output Artifact
-    #    uses: actions/upload-artifact@v4
-    #    with:
-    #       name: terraform-output
-    #       path: ./terraform/eks_connect.txt
+     - name: Upload Terraform Output Artifact
+       uses: actions/upload-artifact@v4
+       with:
+          name: terraform-output
+          path: ./terraform/eks_connect.txt
