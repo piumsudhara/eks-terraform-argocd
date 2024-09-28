@@ -27,3 +27,7 @@ module "argocd" {
   cluster_certificate = module.eks.cluster_certificate
   cluster_token       = data.aws_eks_cluster_auth.main.token
 }
+
+module "acm" {
+  source = "./modules/acm"
+}
