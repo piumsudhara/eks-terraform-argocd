@@ -30,4 +30,11 @@ module "argocd" {
 
 module "acm" {
   source = "./modules/acm"
+
+  vpc_id           = module.vpc.vpc_id             # VPC ID from your VPC module
+  subnet_ids       = module.vpc.public_subnets     # Public subnets from your VPC module
+  route53_zone_id  = data.aws_route53_zone.lucidns.zone_id  # Route53 zone ID
+  domain_name      = "argocd.lucidns.com"          # Pass the domain name
+  acm_subnet_ids       = module.vpc.public_subnet_ids
 }
+
