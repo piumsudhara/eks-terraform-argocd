@@ -1,9 +1,9 @@
 output "eks_connect" {
-  value = "aws eks --region ap-southeast-1 update-kubeconfig --name ${aws_eks_cluster.main.name}"
+  value = "aws eks --region ${var.region} update-kubeconfig --name ${module.eks.cluster_name}"
 }
 
 output "argocd_server_load_balancer" {
-  value = data.kubernetes_service.argocd_server.status[0].load_balancer[0].ingress[0].hostname
+  value = module.argocd.argocd_server_hostname
 }
 
 output "argocd_initial_admin_secret" {

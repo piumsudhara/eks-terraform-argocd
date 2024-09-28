@@ -1,23 +1,18 @@
 provider "kubernetes" {
-  host                   = aws_eks_cluster.main.endpoint
-  token                  = data.aws_eks_cluster_auth.main.token
-  cluster_ca_certificate = base64decode(aws_eks_cluster.main.certificate_authority[0].data)
+  host                   = var.cluster_endpoint
+  token                  = var.cluster_token
+  cluster_ca_certificate = base64decode(var.cluster_certificate)
 }
 
 provider "helm" {
   kubernetes {
-    host                   = aws_eks_cluster.main.endpoint
-    token                  = data.aws_eks_cluster_auth.main.token
-    cluster_ca_certificate = base64decode(aws_eks_cluster.main.certificate_authority[0].data)
+    host                   = var.cluster_endpoint
+    token                  = var.cluster_token
+    cluster_ca_certificate = base64decode(var.cluster_certificate)
   }
 }
 
-data "aws_eks_cluster_auth" "main" {
-  name = aws_eks_cluster.main.name
-}
-
 resource "helm_release" "argocd" {
-  depends_on = [aws_eks_node_group.main]
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
@@ -37,7 +32,6 @@ resource "helm_release" "argocd" {
     value = "nlb"
   }
 }
-
 
 data "kubernetes_service" "argocd_server" {
   metadata {
